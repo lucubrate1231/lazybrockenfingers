@@ -8,6 +8,7 @@ const states = [
     message: "창문을 살짝 열어도 괜찮은 맑은 공기예요.",
     meter: "24%",
     tone: "good",
+    image: "assets/good.svg",
     washColor: "rgba(216, 255, 138, 0.46)",
     tintColor: "rgba(216, 255, 138, 0.2)",
   },
@@ -20,6 +21,7 @@ const states = [
     message: "가벼운 산책은 좋아요. 오래 머무를 땐 물을 챙겨요.",
     meter: "48%",
     tone: "normal",
+    image: "assets/normal.svg",
     washColor: "rgba(255, 249, 132, 0.5)",
     tintColor: "rgba(255, 249, 132, 0.2)",
   },
@@ -32,6 +34,7 @@ const states = [
     message: "마스크를 챙기고 긴 외출은 조금 줄여볼까요?",
     meter: "72%",
     tone: "bad",
+    image: "assets/bad.svg",
     washColor: "rgba(255, 153, 8, 0.42)",
     tintColor: "rgba(255, 153, 8, 0.16)",
   },
@@ -44,6 +47,7 @@ const states = [
     message: "오늘은 실내에서 포근하게 쉬는 편이 좋아요.",
     meter: "96%",
     tone: "very-bad",
+    image: "assets/very-bad.svg",
     washColor: "rgba(119, 122, 119, 0.42)",
     tintColor: "rgba(119, 122, 119, 0.16)",
   },
@@ -68,6 +72,7 @@ const elements = {
   windowToggle: document.querySelector("#windowToggle"),
   toast: document.querySelector("#toast"),
   mascot: document.querySelector("#mascot"),
+  mascotImage: document.querySelector("#mascotImage"),
   statusCard: document.querySelector("#statusCard"),
   statusLabel: document.querySelector("#statusLabel"),
   pmValue: document.querySelector("#pmValue"),
@@ -109,6 +114,7 @@ function render() {
   elements.windValue.textContent = state.wind;
   elements.statusMessage.textContent = state.message;
   elements.meterFill.style.width = state.meter;
+  elements.mascotImage.src = state.image;
 
   elements.mascot.classList.remove("normal", "bad", "very-bad");
   elements.statusCard.style.background = "#f3fff9";
