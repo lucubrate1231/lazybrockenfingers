@@ -131,6 +131,14 @@ h1 {
   --dust-y: 0px;
   --dust-rotate: 0deg;
   --dust-scale: 1;
+  --dust-x-pop: 0px;
+  --dust-y-pop: 0px;
+  --dust-rotate-pop: 0deg;
+  --dust-scale-pop: 1;
+  --dust-x-settle: 0px;
+  --dust-y-settle: 0px;
+  --dust-rotate-settle: 0deg;
+  --dust-scale-settle: 1;
   border-radius: 54% 46% 50% 45% / 43% 49% 51% 55%;
   background: #d8ff8a;
   box-shadow: 0 18px 34px rgba(60, 130, 95, 0.16);
@@ -160,7 +168,7 @@ h1 {
 }
 
 .mascot.runaway {
-  animation: runAway 1240ms cubic-bezier(0.18, 0.84, 0.28, 1) both;
+  animation: springAway 1680ms cubic-bezier(0.22, 1.38, 0.36, 1) both;
 }
 
 .face {
@@ -578,21 +586,33 @@ input[type="range"] {
   }
 }
 
-@keyframes runAway {
+@keyframes springAway {
   0% {
     transform: translate(0, 0) rotate(0deg) scale(1);
   }
-  34% {
+  20% {
     transform:
-      translate(calc(var(--dust-x) * 0.52), calc(var(--dust-y) * 0.52 - 10px))
-      rotate(calc(var(--dust-rotate) * 0.52))
-      scale(calc(1 + (var(--dust-scale) - 1) * 0.52));
+      translate(var(--dust-x-pop), var(--dust-y-pop))
+      rotate(var(--dust-rotate-pop))
+      scale(var(--dust-scale-pop));
   }
-  72% {
+  38% {
+    transform:
+      translate(var(--dust-x-settle), var(--dust-y-settle))
+      rotate(var(--dust-rotate-settle))
+      scale(var(--dust-scale-settle));
+  }
+  58% {
     transform:
       translate(var(--dust-x), var(--dust-y))
       rotate(var(--dust-rotate))
       scale(var(--dust-scale));
+  }
+  76% {
+    transform:
+      translate(var(--dust-x-settle), var(--dust-y-settle))
+      rotate(var(--dust-rotate-settle))
+      scale(var(--dust-scale-settle));
   }
   100% {
     transform: translate(0, 0) rotate(0deg) scale(1);

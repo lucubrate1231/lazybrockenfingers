@@ -140,6 +140,51 @@ function render() {
   }
 }
 
+function playBoingSound() {
+  const AudioContext = window.AudioContext || window.webkitAudioContext;
+  if (!AudioContext) return;
+
+  const context = playBoingSound.context || new AudioContext();
+  playBoingSound.context = context;
+  if (context.state === "suspended") context.resume();
+
+  const now = context.currentTime;
+  const notes = [
+    { start: 0, from: 560, to: 880 },
+    { start: 0.18, from: 430, to: 720 },
+  ];
+
+  notes.forEach(({ start, from, to }) => {
+    const oscillator = context.createOscillator();
+    const gain = context.createGain();
+    const filter = context.createBiquadFilter();
+    const t = now + start;
+
+    oscillator.type = "sine";
+    oscillator.frequency.setValueAtTime(from, t);
+    oscillator.frequency.exponentialRampToValueAtTime(to, t + 0.07);
+    oscillator.frequency.exponentialRampToValueAtTime(from * 0.82, t + 0.24);
+
+    filter.type = "lowpass";
+    filter.frequency.setValueAtTime(1800, t);
+
+    gain.gain.setValueAtTime(0.0001, t);
+    gain.gain.exponentialRampToValueAtTime(0.13, t + 0.025);
+    gain.gain.exponentialRampToValueAtTime(0.0001, t + 0.28);
+
+    oscillator.connect(filter);
+    filter.connect(gain);
+    gain.connect(context.destination);
+    oscillator.start(t);
+    oscillator.stop(t + 0.3);
+  });
+}
+
+function playHapticFeedback() {
+  if (!("vibrate" in navigator)) return;
+  navigator.vibrate([18, 42, 28, 36, 18]);
+}
+
 function paintScreenFromDust() {
   const rect = elements.mascot.getBoundingClientRect();
   const x = rect.left + rect.width / 2;
@@ -147,14 +192,26 @@ function paintScreenFromDust() {
   const dustX = Math.round(Math.random() * 88 - 44);
   const dustY = Math.round(Math.random() * 54 - 27);
   const dustRotate = Math.round(Math.random() * 56 - 28);
-  const dustScale = (Math.random() * 0.5 + 0.7).toFixed(2);
+  const dustScale = Number((Math.random() * 0.5 + 0.7).toFixed(2));
+  const popScale = Math.min(1.2, Number((dustScale + 0.14).toFixed(2)));
+  const settleScale = Math.max(0.7, Number((dustScale - 0.08).toFixed(2)));
   const wash = document.createElement("span");
 
+  playBoingSound();
+  playHapticFeedback();
   document.body.style.setProperty("--screen-tint", currentState.tintColor);
   elements.mascot.style.setProperty("--dust-x", `${dustX}px`);
   elements.mascot.style.setProperty("--dust-y", `${dustY}px`);
   elements.mascot.style.setProperty("--dust-rotate", `${dustRotate}deg`);
   elements.mascot.style.setProperty("--dust-scale", dustScale);
+  elements.mascot.style.setProperty("--dust-x-pop", `${Math.round(dustX * 1.12)}px`);
+  elements.mascot.style.setProperty("--dust-y-pop", `${Math.round(dustY * 1.12 - 8)}px`);
+  elements.mascot.style.setProperty("--dust-rotate-pop", `${Math.round(dustRotate * 1.18)}deg`);
+  elements.mascot.style.setProperty("--dust-scale-pop", popScale);
+  elements.mascot.style.setProperty("--dust-x-settle", `${Math.round(dustX * 0.82)}px`);
+  elements.mascot.style.setProperty("--dust-y-settle", `${Math.round(dustY * 0.82 + 5)}px`);
+  elements.mascot.style.setProperty("--dust-rotate-settle", `${Math.round(dustRotate * 0.72)}deg`);
+  elements.mascot.style.setProperty("--dust-scale-settle", settleScale);
   wash.className = "color-wash";
   wash.style.setProperty("--wash-x", `${x}px`);
   wash.style.setProperty("--wash-y", `${y}px`);
@@ -168,7 +225,7 @@ function paintScreenFromDust() {
   window.setTimeout(() => wash.remove(), 1000);
   window.setTimeout(() => {
     elements.mascot.classList.remove("runaway");
-  }, 1280);
+  }, 1720);
 
   showToast("먼지가 색을 뿌리고 도망갔어요.");
 }
