@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>먼지몽 알림</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <section class="weather-panel" aria-label="현재 미세먼지 상태">
+        <div class="top-bar">
+          <div>
+            <p class="eyebrow">오늘의 공기</p>
+            <h1>먼지몽 알림</h1>
+          </div>
+          <button class="icon-button" id="notifyButton" type="button" aria-label="알림 켜기">
+            <span aria-hidden="true">🔔</span>
+          </button>
+        </div>
+
+        <div class="mascot-wrap">
+          <div class="mascot" id="mascot" role="button" tabindex="0" aria-label="먼지 캐릭터 누르기">
+            <div class="face">
+              <span class="brow left"></span>
+              <span class="brow right"></span>
+              <span class="eye left"></span>
+              <span class="eye right"></span>
+              <span class="mouth"></span>
+              <span class="cheek left"></span>
+              <span class="cheek right"></span>
+            </div>
+            <span class="sparkle one"></span>
+            <span class="sparkle two"></span>
+          </div>
+        </div>
+
+        <div class="status-card" id="statusCard">
+          <span class="status-label" id="statusLabel">좋음</span>
+          <strong><span id="pmValue">18</span> µg/m³</strong>
+          <p id="statusMessage">창문을 살짝 열어도 괜찮은 맑은 공기예요.</p>
+        </div>
+
+        <div class="meter" aria-label="미세먼지 단계">
+          <span class="meter-fill" id="meterFill"></span>
+        </div>
+
+        <div class="quick-grid" aria-label="공기 지표">
+          <article>
+            <span>초미세먼지</span>
+            <strong id="pm25Value">9</strong>
+          </article>
+          <article>
+            <span>습도</span>
+            <strong id="humidityValue">42%</strong>
+          </article>
+          <article>
+            <span>바람</span>
+            <strong id="windValue">2.1</strong>
+          </article>
+        </div>
+      </section>
+
+      <section class="controls-panel" aria-label="알림 설정">
+        <div class="field">
+          <label for="citySelect">지역</label>
+          <select id="citySelect">
+            <option>서울 마포구</option>
+            <option>부산 해운대구</option>
+            <option>대구 중구</option>
+            <option>제주 제주시</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="sensitivityRange">알림 민감도</label>
+          <input id="sensitivityRange" type="range" min="1" max="3" value="2" />
+          <div class="range-labels">
+            <span>느긋</span>
+            <span>보통</span>
+            <span>예민</span>
+          </div>
+        </div>
+
+        <div class="toggle-row">
+          <div>
+            <strong>외출 전 알림</strong>
+            <span>나쁨 이상이면 알려줘요</span>
+          </div>
+          <label class="switch">
+            <input id="outdoorToggle" type="checkbox" checked />
+            <span></span>
+          </label>
+        </div>
+
+        <div class="toggle-row">
+          <div>
+            <strong>환기 타이밍</strong>
+            <span>좋음일 때 창문 알림</span>
+          </div>
+          <label class="switch">
+            <input id="windowToggle" type="checkbox" checked />
+            <span></span>
+          </label>
+        </div>
+
+      </section>
+
+      <button class="primary-button" id="refreshButton" type="button">
+        상태 바꿔보기
+      </button>
+    </main>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+    <script src="app.js"></script>
+  </body>
+</html>
