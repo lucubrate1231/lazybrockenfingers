@@ -180,6 +180,11 @@ function playBoingSound() {
   });
 }
 
+function playHapticFeedback() {
+  if (!("vibrate" in navigator)) return;
+  navigator.vibrate([18, 42, 28, 36, 18]);
+}
+
 function paintScreenFromDust() {
   const rect = elements.mascot.getBoundingClientRect();
   const x = rect.left + rect.width / 2;
@@ -193,6 +198,7 @@ function paintScreenFromDust() {
   const wash = document.createElement("span");
 
   playBoingSound();
+  playHapticFeedback();
   document.body.style.setProperty("--screen-tint", currentState.tintColor);
   elements.mascot.style.setProperty("--dust-x", `${dustX}px`);
   elements.mascot.style.setProperty("--dust-y", `${dustY}px`);
